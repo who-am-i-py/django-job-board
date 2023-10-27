@@ -1,8 +1,14 @@
 from django.shortcuts import render
-
+from django.http import Http404
+from .models import Job
 # Create your views here.
 def job_list(request):
-    pass
+    all_jobs = Job.objects.all()
+    return render(request, 'job/job/list.html',{'jobs': all_jobs})
 
-def job_detail(request, id)
-    pass
+def job_detail(request, id):
+    try:
+        job = Job.objects.get(id=id)
+    except Job.DoesNotExist:
+        raise Http404('Job not found')
+    return render(request,'job/job/detail.html', {'job': job})
