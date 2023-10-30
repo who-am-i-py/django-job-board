@@ -1,6 +1,12 @@
 from django.db import models
 from django.utils import timezone
 # Create your models here.
+def file_upload(instance, filename):
+    if filename:
+        image_name, extension = filename.split('.')
+        return f"jobs/{instance.id}/{instance.id}.{extension}"
+    return instance
+
 class Job(models.Model):
     class JobType(models.TextChoices):
         FULL_TIME = 'FT','Full time'
@@ -16,8 +22,7 @@ class Job(models.Model):
     salary = models.IntegerField(default=0)
     experience = models.IntegerField(default=1)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
-    pic = models.ImageField(upload_to='job/job_pics')
-
+    pic = models.ImageField(upload_to=file_upload, blank=True)
     def __str__(self) :
         return f"[{self.title}]"
     
