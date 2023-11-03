@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 def job_list(request):
     all_jobs = Job.objects.all()
-    paginator = Paginator(all_jobs, 4) 
+    paginator = Paginator(all_jobs, 2) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'jobs': page_obj}
