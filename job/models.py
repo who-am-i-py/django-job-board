@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 # Create your models here.
 def file_upload(instance, filename):
     if filename:
@@ -24,6 +25,11 @@ class Job(models.Model):
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     pic = models.ImageField(upload_to=file_upload, blank=True)
     slug = models.SlugField(null=True,blank=True)
+    def save(self, *arg, **kwargs):
+        # logic
+        self.slug = slugify(self.title)
+        super(Job,self).save(*arg, **kwargs)
+
     def __str__(self) :
         return f"[{self.title}]"
     
